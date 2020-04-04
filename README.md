@@ -1,6 +1,6 @@
 # AVS Scripts
 
-The AVS Scripts are meant to ease and automate configuring, building, and installing different versions of the AVS SDKs on the most common testing platforms (e.g. Raspbian, Ubuntu, and so on.) If you want a verbose, documented, and more readable version of the script refer to the Red Pill folder. If you just want to get the job done with the least amount of noise possible (and you know what you're doing), then feel free to go to the Blue Pill version.
+The AVS Scripts are meant to ease and automate configuring, building, and installing different versions of the AVS SDKs on the most common testing platforms (e.g. Raspbian, Ubuntu, and so on.) If you want a verbose, documented, and more readable version of the script refer to the Red Pill folder. If you just want to get the job done with the least amount of noise possible (or you know what you're doing), then feel free to go to the Blue Pill version.
 
 Each script (Red Pill version only) will let you know in which platform and SDK version it has been successfully tested. I include specific information about the SoC, amount of memory, and OS version in which they have run successfully. 
 
