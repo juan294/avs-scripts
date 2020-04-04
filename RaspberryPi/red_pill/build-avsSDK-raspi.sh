@@ -1,31 +1,34 @@
 #!/usr/bin/env sh
-#=================================================================================================
+#============================================================================================================================
 # HEADER
-#=================================================================================================
+#============================================================================================================================
 #  DESCRIPTION  AVS SDK Installation:
 #               This shell script is meant to ease and automate
 #               configuring, building, and installing different
-#               versions of the AVS SDK on Ubuntu Linux.
-#=================================================================================================
+#               versions of the AVS SDK on Raspbian.
+#============================================================================================================================
 #  HISTORY
-#     2020/03/31 : @jgponce : Script creation
-#     2020/04/01 : @jgponce : Added Exit options to avoid wasting time when something fails
-# 
-#=================================================================================================
-#  SUCCESSFULLY TESTED ON
-#    OS:     Ubuntu 18.04.4 LTS (Running on Raspberry Pi 4 w/4GB RAM)
-#    SDK(s): v1.15 | v1.17.0 | v1.18.0
+#     2020/04/02 : @jgponce : Script creation
 #
-#=================================================================================================
+#============================================================================================================================
+#  SUCCESSFULLY TESTED ON
+#    OS:     Raspbian GNU/Linux 9 [Stretch] (Running on Raspberry Pi 3B w/1GB RAM)
+#    SDK(s): v1.15
+#    OS:     Raspbian GNU/Linux 10 [Buster] (Running on Raspberry Pi 4 w/4GB RAM)
+#    SDK(s): v1.17.0 | v1.18.0
+#
+#============================================================================================================================
 #  IMPLEMENTATION
-#     version        build-avsSDK-Ubuntu.sh v0.1.1
+#     version        build-avsSDK-raspbi.sh v0.1.0
 #     author         Juan GONZALEZ PONCE (inspired by Behboud KALANTARY's macOS script)
 #     copyright      Copyright (c) http://www.amazon.com
-#     based_on       https://developer.amazon.com/en-US/docs/alexa/avs-device-sdk/ubuntu.html
+#     license        GNU General Public License
+#     based_on       https://developer.amazon.com/en-US/docs/alexa/alexa-smart-screen-sdk/raspberry-pi.html for v1.5 &
+#                    https://developer.amazon.com/en-US/docs/alexa/avs-device-sdk/raspberry-pi.html for v1.17.0 and higher
 #
-#=================================================================================================
+#============================================================================================================================
 # END_OF_HEADER
-#=================================================================================================
+#============================================================================================================================
 
 # --- Before you install the AVS Device SDK, you must register an AVS product and create a security profile. ---
 # --- Set up required variables for installation ---
@@ -36,8 +39,8 @@ productId="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the
 DSN="DEVICE_SERIAL_NUMBER" #--- The number doesn't really matter while testing
 
 # --- YOUR LOCAL ENVIRONMENT ---
-HOME="/home/ubuntu"
-PROJECT_DIR=${HOME}"/Prototypes/avs-sdk_1_18" #--- There's no need to create these folders in advanced
+HOME="/home/pi"
+PROJECT_DIR=${HOME}"/Prototypes/ass-sdk" #--- There's no need to create these folders in advanced
 CPU_CORES="-j4" #--- Set the desired # of cores. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether
 
 # --- AVS SDK ---
@@ -46,7 +49,6 @@ DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" #--- Accepted values: DEBUG0 .. DEBUG9 | IN
 
 # --------------------------------------------------------------------------------------------------
 # --- Set up your development environment ---
-
 echo "##############################################
 #                                            #
 #   SETTING UP THE DEVELOPMENT ENVIRONMENT   #
@@ -63,58 +65,11 @@ mkdir sdk-build third-party sdk-install db
 
 # --- Install the SDK dependencies ---
 # --- Make sure the command runs successfully, and that no errors are thrown. If the command fails, run apt-get install for each dependency individually. ---
-time sudo apt-get install -y git gcc \
-cmake openssl clang-format libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad libgstreamer-plugins-bad1.0-dev \
-gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools libssl-dev pulseaudio doxygen libsqlite3-dev curl libcurl4-openssl-dev \
-libasound2-dev || exit 1 # -- If it fails don't waste time going forward, instead exit in the least elegant way possible. ---
-
-# --- Verify that the openssl and nghttp2 dependencies are installed; these dependencies are used to connect to AVS by using HTTP. ---
-curl --version
-
-: 'Example output:
-curl 7.58.0 (x86_64-pc-linux-gnu) libcurl/7.58.0 OpenSSL/1.1.1 zlib/1.2.11 libidn2/2.0.4 libpsl/  0.19.1 (+libidn2/2.0.4) nghttp2/1.30.0 librtmp/2.3
-Release-Date: 2018-01-24
-Protocols: dict file ftp ftps gopher http https imap imaps ldap ldaps pop3 pop3s rtmp rtsp smb smbs smtp smtps telnet tftp 
-Features: AsynchDNS IDN IPv6 Largefile GSS-API Kerberos SPNEGO NTLM NTLM_WB SSL libz TLS-SRP HTTP2 UnixSockets HTTPS-proxy PSL
-'
-
-# --- If dependencies are not installed then enable the following: ---
-#cd ${PROJECT_DIR}/third-party
-#sudo apt-get -y install build-essential nghttp2 libnghttp2-dev libssl-dev
-#wget https://curl.haxx.se/download/curl-7.63.0.tar.gz
-#tar xzf curl-7.63.0.tar.gz
-  
-#cd curl-7.63.0
-#./configure --with-nghttp2 --prefix=/usr/local --with-ssl
-    
-#make && sudo make install
-#sudo ldconfig
-
-echo "##############################################
-#                                            #
-#             CURL SYSTEM INFO               #
-#                                            #
-##############################################"
-
-# --- Verify that you can run curl ---
-curl -I https://nghttp2.org/  || exit 1
-
-: 'If the request succeeds, you will see a message like this:
-HTTP/2 200
-date: Fri, 15 Dec 2017 18:13:26 GMT
-content-type: text/html
-last-modified: Sat, 25 Nov 2017 14:02:51 GMT
-etag: "5a19780b-19e1"
-accept-ranges: bytes
-content-length: 6625
-x-backend-header-rtt: 0.001021
-strict-transport-security: max-age=31536000
-server: nghttpx
-via: 2 nghttpx
-x-frame-options: SAMEORIGIN
-x-xss-protection: 1; mode=block
-x-content-type-options: nosniff
-'
+time sudo apt-get -y install \
+git gcc cmake build-essential libsqlite3-dev libcurl4-openssl-dev libfaad-dev \
+libssl-dev libsoup2.4-dev libgcrypt20-dev libgstreamer-plugins-bad1.0-dev \
+gstreamer1.0-plugins-good libasound2-dev doxygen || exit 1 # -- If it fails don't waste time going forward, instead exit in the least elegant way possible. ---
+ 
 echo "##############################################
 #                                            #
 #       INSTALL & CONFIGURE PORTAUDIO        #
@@ -126,10 +81,19 @@ cd ${PROJECT_DIR}/third-party
 time wget -c http://www.portaudio.com/archives/pa_stable_v190600_20161030.tgz || exit 1
 tar xf pa_stable_v190600_20161030.tgz
 cd portaudio
-time ./configure -without-jack && make $CPU_CORES || exit 1
+time ./configure -without-jack && make $CPU_CORES || exit 1 
+
+echo "##############################################
+#                                            #
+#            INSTALL COMMENTJSON             #
+#                                            #
+##############################################"
+
+# --- Install commentjson to parse comments in the AlexaClientSDKConfig.json file. ---
+time  pip install commentjson || exit 1
 
 # --------------------------------------------------------------------------------------------------
-# --- Download the AVS Device SDK ---
+# --- Download the AVS Device SDK and the Sensory wake word engine ---
 cd ${PROJECT_DIR}
 
 echo "##############################################
@@ -164,9 +128,10 @@ echo "##############################################
 #                                            #
 ##############################################"
 
+# --------------------------------------------------------------------------------------------------
 cd ${PROJECT_DIR}/sdk-build
 
-# --- Configure, Build, and Install the AVS Device SDK ---
+ # --- Configure, Build, and Install the AVS Device SDK ---
 if [ "$BRANCH" != "v1.18.0" ]; then
 echo "##############################################
 #                                            #
@@ -213,7 +178,14 @@ echo "##############################################
 #             INSTALLING THE SDK             #
 #                                            #
 ##############################################"
-time make $CPU_CORES install || exit 1
+time sudo make $CPU_CORES install || exit 1
+
+echo "##############################################
+#                                            #
+#         BUILDING THE SAMPLE APP            #
+#                                            #
+##############################################"
+time make $CPU_CORES SampleApp || exit 1
 
 echo "##############################################
 #                                            #
@@ -268,4 +240,4 @@ echo "##############################################
 # --------------------------------------------------------------------------------------------------
 # --- Run the AVS Device SDK sample app ---
 cd ${PROJECT_DIR}/sdk-build/SampleApp/src
-./SampleApp ${PROJECT_DIR}/sdk-build/Integration/AlexaClientSDKConfig.json $DEBUG_LEVEL
+PA_ALSA_PLUGHW=1 ./SampleApp ${PROJECT_DIR}/sdk-build/Integration/AlexaClientSDKConfig.json $DEBUG_LEVEL
