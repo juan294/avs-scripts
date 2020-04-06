@@ -5,15 +5,14 @@
 #  DESCRIPTION  ASS SDK Installation:
 #               This shell script is meant to ease and automate
 #               configuring, building, and installing the Alexa
-#               Smart Screen SDK on Ubuntu Linux.
+#               Smart Screen SDK on macOS.
 #=================================================================================================
 #  HISTORY
-#     2020/03/31 : @jgponce : Script creation
-#     2020/04/01 : @jgponce : Added Exit options to avoid wasting time when something fails
+#     2020/04/06 : @jgponce : Script creation
 # 
 #=================================================================================================
 #  SUCCESSFULLY TESTED ON
-#    OS:       Ubuntu 18.04.4 LTS (Running on Raspberry Pi 4 w/4GB RAM)
+#    OS:       macOS Mojave v10.14.6
 #    SDK(s):   v1.15
 #    APL CORE: v1.2
 #
@@ -33,13 +32,13 @@
 # --- Set up required variables for installation ---
 
 # --- YOUR LOCAL ENVIRONMENT ---
-HOME="/home/ubuntu"
-PROJECT_DIR=${HOME}"/Prototypes/ass-sdk" #--- There's no need to create these folders in advanced
-CPU_CORES="-j4" #--- Set the desired # of cores. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether
+HOME="/Users/jgponce"
+PROJECT_DIR=${HOME}"/Prototypes/avs-sdk_1_15" #--- There's no need to create these folders in advanced
+CPU_CORES="-j2" #--- Set the desired # of cores. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether
 
 # --- ASS SDK ---
-APL_CORE_BRANCH="THE_LIB_BRANCH_YOU_WANT" #--- If you're building for Medici make sure to set this up to v1.2
-DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
+APL_CORE_BRANCH="v1.2" #--- If you're building for Medici make sure to set this up to v1.2
+DEBUG_LEVEL="INFO" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
 
 # --------------------------------------------------------------------------------------------------
 # --- Download the APL Core Library and Alexa Smart Screen SDK ---
@@ -85,8 +84,7 @@ echo "##############################################
 
 # --------------------------------------------------------------------------------------------------
 # --- Install Node.js ---
-curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-sudo apt-get install -y nodejs || exit 1
+brew install node
 
 # --- Download and install websocketpp ---
 cd ${PROJECT_DIR}/third-party
@@ -94,11 +92,16 @@ time wget https://github.com/zaphoyd/websocketpp/archive/0.8.1.tar.gz -O websock
 tar -xvzf websocketpp-0.8.1.tar.gz
 
 # --- Download and install ASIO ---
-sudo apt-get -y install libasio-dev || exit 1
+brew install asio
 
 cd ${PROJECT_DIR}
 mkdir ss-build
 cd ss-build
+
+# --- Update the libffi package configuration path to the path retrieved in the previous step. ---
+opensslFolder=$(brew info openssl | grep /usr/local/Cellar | cut -d '(' -f1 | tr -d '[:space:]')
+echo export PKG_CONFIG_PATH="/usr/local/opt/curl-openssl/lib/pkgconfig:$opensslFolder/lib/pkgconfig:$PKG_CONFIG_PATH" >> ~/.bash_profile
+source $HOME/.bash_profile
 
 echo "##############################################
 #                                            #
@@ -125,7 +128,7 @@ echo "##############################################
 #              BUILDING ASS SDK              #
 #                                            #
 ##############################################"
-time make $CPU_CORES  || exit 1 # --- Adjust -jn to the number of cores you have available
+time make $CPU_CORES  || exit 1
 
 echo "##############################################
 #                                            #

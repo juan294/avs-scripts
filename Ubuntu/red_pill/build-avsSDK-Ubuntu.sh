@@ -61,6 +61,12 @@ mkdir sdk-build third-party sdk-install db
 # --- Update your system (if needed) ---
 #sudo apt-get update && sudo apt-get upgrade -y
 
+echo "##############################################
+#                                            #
+#          INSTALL SDK DEPENDENCIES          #
+#                                            #
+##############################################"
+
 # --- Install the SDK dependencies ---
 # --- Make sure the command runs successfully, and that no errors are thrown. If the command fails, run apt-get install for each dependency individually. ---
 time sudo apt-get install -y git gcc \
@@ -123,6 +129,7 @@ echo "##############################################
 
 # --- Install and configure portaudio ---
 cd ${PROJECT_DIR}/third-party
+#sudo apt-get install wget # --- Enable this line to install wget in case you don't have it already on your system.
 time wget -c http://www.portaudio.com/archives/pa_stable_v190600_20161030.tgz || exit 1
 tar xf pa_stable_v190600_20161030.tgz
 cd portaudio

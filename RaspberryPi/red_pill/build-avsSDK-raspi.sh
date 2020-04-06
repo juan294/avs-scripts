@@ -78,6 +78,7 @@ echo "##############################################
 
 # --- Install and configure portaudio ---
 cd ${PROJECT_DIR}/third-party
+#sudo apt-get install wget # --- Enable this line to install wget in case you don't have it already on your system.
 time wget -c http://www.portaudio.com/archives/pa_stable_v190600_20161030.tgz || exit 1
 tar xf pa_stable_v190600_20161030.tgz
 cd portaudio
@@ -121,12 +122,6 @@ echo "##############################################
 #                                            #
 ##############################################"
 time ${PROJECT_DIR}/third-party/alexa-rpi/bin/./sdk-license --validate ../config/license-key.txt || exit 1
-
-echo "##############################################
-#                                            #
-#   SETTING UP THE DEVELOPMENT ENVIRONMENT   #
-#                                            #
-##############################################"
 
 # --------------------------------------------------------------------------------------------------
 cd ${PROJECT_DIR}/sdk-build

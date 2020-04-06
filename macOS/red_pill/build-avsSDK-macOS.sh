@@ -12,7 +12,9 @@
 # 
 #=================================================================================================
 #  SUCCESSFULLY TESTED ON
-#    OS:     macOS Cataline v10.15.4
+#    OS:     macOS Catalina v10.15.4
+#    SDK(s): v1.15 | v1.17.0 | v1.18.0
+#    OS:     macOS Mojave v10.14.6
 #    SDK(s): v1.15 | v1.17.0 | v1.18.0
 #
 #=================================================================================================
@@ -35,12 +37,12 @@ productId="MacBookPro" #--- Make sure this matches the values set up in the AVS 
 DSN="12345" #--- The number doesn't really matter while testing
 
 # --- YOUR LOCAL ENVIRONMENT ---
-HOME="/Users/juan"
-PROJECT_DIR=${HOME}"/Prototypes/avs-sdk_1_18" #--- There's no need to create these folders in advanced
-CPU_CORES="-j4" #--- Set the desired # of cores. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether
+HOME="/Users/jgponce"
+PROJECT_DIR=${HOME}"/Prototypes/avs-sdk_1_15" #--- There's no need to create these folders in advanced
+CPU_CORES="-j2" #--- Set the desired # of cores. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether
 
 # --- AVS SDK ---
-BRANCH="v1.18.0" #--- If you're building for Medici make sure to set this up to v1.15
+BRANCH="v1.15" #--- If you're building for Medici make sure to set this up to v1.15
 DEBUG_LEVEL="DEBUG9" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
 
 # --------------------------------------------------------------------------------------------------
@@ -55,7 +57,10 @@ echo "##############################################
 # --- Create the required directories ---
 mkdir -p ${PROJECT_DIR}
 cd ${PROJECT_DIR}
-mkdir build source third-party application-necessities
+mkdir sdk-build third-party sdk-install db sdk-source application-necessities
+
+cd application-necessities
+mkdir sound-files # --- Not sure yet where this is used
 
 # --- Install the SDK dependencies ---
 # --- Make sure you have installed:
@@ -76,38 +81,30 @@ if [[ $? != 0 ]] ; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 else
     echo "Updating Homebrew:"
-    brew update
+    brew update # --- Beware that this command might fail if you're behind VPN or FW
 fi
 
-# Make sure python is 2.7 or later
-PYTHON_OK=`/usr/bin/python -c 'import sys
+# Make sure python is 2.7 or later. Feel free to comment this check if you're using Python3 or know your version of 2.x
+PYTHON_VERSION=`/usr/bin/python -c 'import sys
 print (sys.version_info >= (2, 7) and "1" or "0")'`
-if [ "$PYTHON_OK" = '0' ]; then
-    echo "Python version is too old"
+if [ "$PYTHON_VERSION" = '0' ]; then
+    echo "You should update your Python version."
+    exit 1
 fi
 
+# --- Install and configure curl-openssl ---
+brew install curl-openssl
+echo export PATH="/usr/local/opt/curl-openssl/bin:$PATH" >> ~/.bash_profile
 
 # --- Verify that the openssl and nghttp2 dependencies are installed; these dependencies are used to connect to AVS by using HTTP. ---
 curl --version
 
 : 'Example output:
-curl 7.58.0 (x86_64-pc-linux-gnu) libcurl/7.58.0 OpenSSL/1.1.1 zlib/1.2.11 libidn2/2.0.4 libpsl/  0.19.1 (+libidn2/2.0.4) nghttp2/1.30.0 librtmp/2.3
-Release-Date: 2018-01-24
-Protocols: dict file ftp ftps gopher http https imap imaps ldap ldaps pop3 pop3s rtmp rtsp smb smbs smtp smtps telnet tftp 
-Features: AsynchDNS IDN IPv6 Largefile GSS-API Kerberos SPNEGO NTLM NTLM_WB SSL libz TLS-SRP HTTP2 UnixSockets HTTPS-proxy PSL
+curl 7.69.1 (x86_64-apple-darwin18.7.0) libcurl/7.69.1 OpenSSL/1.1.1f zlib/1.2.11 brotli/1.0.7 c-ares/1.16.0 libssh2/1.9.0 nghttp2/1.40.0 librtmp/2.3
+Release-Date: 2020-03-11
+Protocols: dict file ftp ftps gopher http https imap imaps ldap ldaps pop3 pop3s rtmp rtsp scp sftp smb smbs smtp smtps telnet tftp 
+Features: AsynchDNS brotli GSS-API HTTP2 HTTPS-proxy IPv6 Kerberos Largefile libz Metalink NTLM NTLM_WB SPNEGO SSL TLS-SRP UnixSockets
 '
-
-# --- If dependencies are not installed then enable the following: ---
-#cd ${PROJECT_DIR}/third-party
-#sudo apt-get -y install build-essential nghttp2 libnghttp2-dev libssl-dev
-#wget https://curl.haxx.se/download/curl-7.63.0.tar.gz
-#tar xzf curl-7.63.0.tar.gz
-  
-#cd curl-7.63.0
-#./configure --with-nghttp2 --prefix=/usr/local --with-ssl
-    
-#make && sudo make install
-#sudo ldconfig
 
 echo "##############################################
 #                                            #
@@ -119,21 +116,33 @@ echo "##############################################
 curl -I https://nghttp2.org/  || exit 1
 
 : 'If the request succeeds, you will see a message like this:
-HTTP/2 200
-date: Fri, 15 Dec 2017 18:13:26 GMT
+HTTP/2 200 
+date: Mon, 06 Apr 2020 08:28:25 GMT
 content-type: text/html
-last-modified: Sat, 25 Nov 2017 14:02:51 GMT
-etag: "5a19780b-19e1"
+last-modified: Fri, 15 Nov 2019 14:36:38 GMT
+etag: "5dceb7f6-19d8"
 accept-ranges: bytes
-content-length: 6625
-x-backend-header-rtt: 0.001021
+content-length: 6616
+x-backend-header-rtt: 0.00164
 strict-transport-security: max-age=31536000
 server: nghttpx
 via: 2 nghttpx
+alt-svc: h3-23=":4433"; ma=3600
 x-frame-options: SAMEORIGIN
 x-xss-protection: 1; mode=block
 x-content-type-options: nosniff
 '
+
+echo "##############################################
+#                                            #
+#          INSTALL SDK DEPENDENCIES          #
+#                                            #
+##############################################"
+
+# --- Install the SDK dependencies ---
+# --- Make sure the command runs successfully, and that no errors are thrown. If the command fails, run brew install for each dependency individually. ---
+brew install gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-libav sqlite3 repo cmake clang-format doxygen wget git
+
 echo "##############################################
 #                                            #
 #       INSTALL & CONFIGURE PORTAUDIO        #
@@ -142,10 +151,25 @@ echo "##############################################
 
 # --- Install and configure portaudio ---
 cd ${PROJECT_DIR}/third-party
+#brew install wget # --- Enable this line to install wget in case you don't have it already on your system.
 time wget -c http://www.portaudio.com/archives/pa_stable_v190600_20161030.tgz || exit 1
 tar xf pa_stable_v190600_20161030.tgz
 cd portaudio
-time ./configure -without-jack && make $CPU_CORES || exit 1
+time ./configure --disable-mac-universal && make $CPU_CORES || exit 1
+
+echo "##############################################
+#                                            #
+#           SET UP PKG_CONFIG_PATH           #
+#                                            #
+##############################################"
+
+# --- Retrieve the correct PKG_CONFIG_PATH path and modification ---
+brew info openssl
+
+# --- Update the libffi package configuration path to the path retrieved in the previous step. ---
+opensslFolder=$(brew info openssl | grep /usr/local/Cellar | cut -d '(' -f1 | tr -d '[:space:]')
+echo export PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig:$opensslFolder/lib/pkgconfig:$PKG_CONFIG_PATH" >> ~/.bash_profile
+source $HOME/.bash_profile
 
 # --------------------------------------------------------------------------------------------------
 # --- Download the AVS Device SDK ---
@@ -159,66 +183,23 @@ echo "##############################################
 
 time git clone --single-branch --branch $BRANCH git://github.com/alexa/avs-device-sdk.git || exit 1
 
-cd ${PROJECT_DIR}/third-party
-
 echo "##############################################
 #                                            #
-#         DOWNLOADING SENSORY WWE            #
+#       GENERATING BUILD DEPENDENCIES        #
 #                                            #
 ##############################################"
-
-time git clone git://github.com/Sensory/alexa-rpi.git || exit 1
-
-# --- You have to run the licensing script to view the Sensory licensing agreement. ---
-echo "##############################################
-#                                            #
-#        EXECUTING SENSORY LICENSE           #
-#                                            #
-##############################################"
-time ${PROJECT_DIR}/third-party/alexa-rpi/bin/./sdk-license --validate ../config/license-key.txt || exit 1
-
-echo "##############################################
-#                                            #
-#   SETTING UP THE DEVELOPMENT ENVIRONMENT   #
-#                                            #
-##############################################"
-
-cd ${PROJECT_DIR}/sdk-build
 
 # --- Configure, Build, and Install the AVS Device SDK ---
-if [ "$BRANCH" != "v1.18.0" ]; then
-echo "##############################################
-#                                            #
-#    BUILD DEPENDENCIES FOR v1.17 & LOWER    #
-#                                            #
-##############################################"
-    time cmake ../avs-device-sdk \
-    -DSENSORY_KEY_WORD_DETECTOR=ON \
-    -DSENSORY_KEY_WORD_DETECTOR_LIB_PATH=${PROJECT_DIR}/third-party/alexa-rpi/lib/libsnsr.a \
-    -DSENSORY_KEY_WORD_DETECTOR_INCLUDE_DIR=${PROJECT_DIR}/third-party/alexa-rpi/include \
-    -DGSTREAMER_MEDIA_PLAYER=ON \
-    -DPORTAUDIO=ON \
-    -DPORTAUDIO_LIB_PATH=${PROJECT_DIR}/third-party/portaudio/lib/.libs/libportaudio.a \
-    -DPORTAUDIO_INCLUDE_DIR=${PROJECT_DIR}/third-party/portaudio/include \
-    -DCMAKE_BUILD_TYPE=DEBUG \
-    -DCMAKE_INSTALL_PREFIX=${PROJECT_DIR}/sdk-install || exit 1
-else
-echo "##############################################
-#                                            #
-#       BUILD DEPENDENCIES FOR v1.18         #
-#                                            #
-##############################################"
-    time cmake ../avs-device-sdk \
-    -DSENSORY_KEY_WORD_DETECTOR=ON \
-    -DSENSORY_KEY_WORD_DETECTOR_LIB_PATH=${PROJECT_DIR}/third-party/alexa-rpi/lib/libsnsr.a \
-    -DSENSORY_KEY_WORD_DETECTOR_INCLUDE_DIR=${PROJECT_DIR}/third-party/alexa-rpi/include \
-    -DGSTREAMER_MEDIA_PLAYER=ON \
-    -DPORTAUDIO=ON \
-    -DPORTAUDIO_LIB_PATH=${PROJECT_DIR}/third-party/portaudio/lib/.libs/libportaudio.so \
-    -DPORTAUDIO_INCLUDE_DIR=${PROJECT_DIR}/third-party/portaudio/include \
-    -DCMAKE_BUILD_TYPE=DEBUG \
-    -DCMAKE_INSTALL_PREFIX=${PROJECT_DIR}/sdk-install || exit 1
-fi
+cd ${PROJECT_DIR}/sdk-build
+time cmake ../avs-device-sdk \
+-DGSTREAMER_MEDIA_PLAYER=ON \
+-DCURL_LIBRARY=/usr/local/opt/curl-openssl/lib/libcurl.dylib \
+-DCURL_INCLUDE_DIR=/usr/local/opt/curl-openssl/include \
+-DPORTAUDIO=ON \
+-DPORTAUDIO_LIB_PATH=${PROJECT_DIR}/third-party/portaudio/lib/.libs/libportaudio.a \
+-DPORTAUDIO_INCLUDE_DIR=${PROJECT_DIR}/third-party/portaudio/include \
+-DCMAKE_BUILD_TYPE=DEBUG || exit 1
+#-DCMAKE_INSTALL_PREFIX=${PROJECT_DIR}/sdk-install || exit 1
 
 echo "##############################################
 #                                            #
@@ -267,7 +248,7 @@ echo "##############################################
     ${PROJECT_DIR}/avs-device-sdk \
     ${PROJECT_DIR}/sdk-build/Integration/AlexaClientSDKConfig.json \
     -DSDK_CONFIG_MANUFACTURER_NAME="AE" \
-    -DSDK_CONFIG_DEVICE_DESCRIPTION="ubuntu" || exit 1
+    -DSDK_CONFIG_DEVICE_DESCRIPTION="macos" || exit 1
 fi
 
 # if dyld error "image not found" occurs then try

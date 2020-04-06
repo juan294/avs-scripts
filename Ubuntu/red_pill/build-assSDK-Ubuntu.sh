@@ -125,7 +125,7 @@ echo "##############################################
 #              BUILDING ASS SDK              #
 #                                            #
 ##############################################"
-time make $CPU_CORES  || exit 1 # --- Adjust -jn to the number of cores you have available
+time make $CPU_CORES  || exit 1
 
 echo "##############################################
 #                                            #
