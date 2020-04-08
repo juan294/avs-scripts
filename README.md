@@ -8,7 +8,7 @@ If you find and issue or see any opportunity for improvement, well.. we're in Gi
 
 ### To Keep in Mind
 
-You still need to be familiar with the general instructions posted on the official developer documents. This is in no way a replacement of those resources.
+You still need to be familiar with the general instructions posted on the official developer documents. This is in no way a replacement of those resources and all scripts should be executed only after making sure all pre-requisites are met.
 
 ### A Note on the Alexa Smart Screen SDK
 In order to install the ASS SDK in your system using these scripts, you would need to have a working AVS SDK installation first (including Sample App authorization). The best way to get the ASS SDK set up and running is: 
@@ -21,17 +21,30 @@ Piece of cake!
 
 These babies have been tested in the following platforms:
 
-| Operative System / SDK     | v1.15 | v1.17.0 | v1.18.0 |
-|----------------------------|-------|---------|---------|
-| Ubuntu (18.04)             | ✓     | ✓       | ✓       |
-| Raspbian (9, 10)           | x     | ✓       | ✓       |
-| macOS (10.14, 10.15)       | ✓     | ✓       | ✓       |
+                             |         AVS SDK           | ASS SDK |
+|----------------------------|---------------------------|---------|
+| Operative System / SDKs    | v1.15 | v1.17.0 | v1.18.0 |   v1.2  |
+|----------------------------|-------|---------|---------|---------|
+| Ubuntu 18.04.4 LTS         | ✓     | ✓       | ✓       | ✓       |
+| Ubuntu 19.10.1 LTS         | x     | ✓       | ✓       | x       |
+| Raspbian 9 (Stretch)       | ✓     | ✓       | ✓       | x       |
+| Raspbian 10 (Buster)       | x     | ✓       | ✓       | x       |
+| macOS Mojave v10.14        | ✓     | ✓       | ✓       | ✓       |
+| macOS Catalina v10.15      | ✓     | ✓       | ✓       | x       |
 
 Legend:
 * ✓: Tested and ran without issues
-* x: Tested but couldn't make it work
+* x: Tested but couldn't make it work or it's not officially supported.
 
 Note: More details about the exact versions of software and hardware can be found in the header of each script.
+
+### Upcoming Features
+
+* Unit tests option as a parameter: https://developer.amazon.com/en-US/docs/alexa/avs-device-sdk/linux.html#run-integration-and-unit-tests.
+* Build with Bluetooth: https://developer.amazon.com/en-US/docs/alexa/avs-device-sdk/linux.html#build-with-bluetooth.
+* Override/clean directories instead of exiting because they exist already.
+* Better system for checking already-installed software (to avoid trying to re-install every time).
+* Add WWE option to all scripts (right now only Raspbian scripts have this option by default).
 
 ### Security Best Practices and Important Considerations
 

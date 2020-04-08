@@ -18,20 +18,23 @@ cmake .. || exit 1
 
 make $CPU_CORES || exit 1
 
-curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-sudo apt-get install -y nodejs || exit 1
+brew install node
 
 cd ${PROJECT_DIR}/third-party
 wget https://github.com/zaphoyd/websocketpp/archive/0.8.1.tar.gz -O websocketpp-0.8.1.tar.gz || exit 1
 tar -xvzf websocketpp-0.8.1.tar.gz
 
-sudo apt-get -y install libasio-dev || exit 1
+brew install asio
 
 cd ${PROJECT_DIR}
 mkdir ss-build
 cd ss-build
 
-cmake -DCMAKE_PREFIX_PATH=${PROJECT_DIR}/sdk-install \
+opensslFolder=$(brew info openssl | grep /usr/local/Cellar | cut -d '(' -f1 | tr -d '[:space:]')
+echo export PKG_CONFIG_PATH="/usr/local/opt/curl-openssl/lib/pkgconfig:$opensslFolder/lib/pkgconfig:$PKG_CONFIG_PATH" >> ~/.bash_profile
+source $HOME/.bash_profile
+
+time cmake -DCMAKE_PREFIX_PATH=${PROJECT_DIR}/sdk-install \
 -DWEBSOCKETPP_INCLUDE_DIR=${PROJECT_DIR}/third-party/websocketpp-0.8.1 \
 -DDISABLE_WEBSOCKET_SSL=ON \
 -DGSTREAMER_MEDIA_PLAYER=ON \

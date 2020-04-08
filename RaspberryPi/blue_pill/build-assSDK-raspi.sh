@@ -1,8 +1,10 @@
 #!/usr/bin/env sh
-HOME="/home/ubuntu"
-PROJECT_DIR=${HOME}"/Projects/ass-sdk"
-APL_CORE_BRANCH="v1.2"
-DEBUG_LEVEL="INFO"
+# --- I'M FEELING LUCKY ---
+HOME="PATH_TO_HOME_FOLDER"
+PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER"
+CPU_CORES="N_CORES_AVAILABLE"
+APL_CORE_BRANCH="THE_LIB_BRANCH"
+DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL"
 
 cd ${PROJECT_DIR}
 git clone --single-branch --branch $APL_CORE_BRANCH git://github.com/alexa/apl-core-library.git

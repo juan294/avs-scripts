@@ -9,12 +9,13 @@
 #=================================================================================================
 #  HISTORY
 #     2020/03/31 : @jgponce : Script creation
-#     2020/04/01 : @jgponce : Added Exit options to avoid wasting time when something fails
 # 
 #=================================================================================================
 #  SUCCESSFULLY TESTED ON
 #    OS:     Ubuntu 18.04.4 LTS (Running on Raspberry Pi 4 w/4GB RAM)
 #    SDK(s): v1.15 | v1.17.0 | v1.18.0
+#    OS:     Ubuntu 19.10.1 LTS (Running on Raspberry Pi 4 w/4GB RAM)
+#    SDK(s): v1.17.0 | v1.18.0
 #
 #=================================================================================================
 #  IMPLEMENTATION
@@ -30,23 +31,21 @@
 # --- Before you install the AVS Device SDK, you must register an AVS product and create a security profile. ---
 # --- Set up required variables for installation ---
 
-# --- YOUR PRODUCT ---
-clientId="YOUR_CLIENT_ID" #--- Make sure this matches the values set up in the AVS Console
-productId="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the AVS Console
-DSN="DEVICE_SERIAL_NUMBER" #--- The number doesn't really matter while testing
+# --- YOUR AVS RODUCT ---
+clientId="YOUR_CLIENT_ID" #--- Make sure this matches the values set up in the AVS Console.
+productId="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the AVS Console.
+DSN="DEVICE_SERIAL_NUMBER" #--- The number doesn't really matter while testing.
 
 # --- YOUR LOCAL ENVIRONMENT ---
-HOME="/home/ubuntu"
-PROJECT_DIR=${HOME}"/Prototypes/avs-sdk_1_18" #--- There's no need to create these folders in advanced
-CPU_CORES="-j4" #--- Set the desired # of cores. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether
+HOME="PATH_TO_HOME_FOLDER"
+PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" #--- There's no need to create these folders in advanced.
+CPU_CORES="N_CORES_AVAILABLE" #--- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
 
 # --- AVS SDK ---
-BRANCH="THE_SDK_BRANCH_YOU_WANT" #--- If you're building for Medici make sure to set this up to v1.15
+BRANCH="THE_SDK_BRANCH" #--- If you're building for Medici make sure to set this up to v1.15.
 DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
 
 # --------------------------------------------------------------------------------------------------
-# --- Set up your development environment ---
-
 echo "##############################################
 #                                            #
 #   SETTING UP THE DEVELOPMENT ENVIRONMENT   #
@@ -67,7 +66,6 @@ echo "##############################################
 #                                            #
 ##############################################"
 
-# --- Install the SDK dependencies ---
 # --- Make sure the command runs successfully, and that no errors are thrown. If the command fails, run apt-get install for each dependency individually. ---
 time sudo apt-get install -y git gcc \
 cmake openssl clang-format libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad libgstreamer-plugins-bad1.0-dev \
@@ -127,7 +125,6 @@ echo "##############################################
 #                                            #
 ##############################################"
 
-# --- Install and configure portaudio ---
 cd ${PROJECT_DIR}/third-party
 #sudo apt-get install wget # --- Enable this line to install wget in case you don't have it already on your system.
 time wget -c http://www.portaudio.com/archives/pa_stable_v190600_20161030.tgz || exit 1
@@ -136,34 +133,13 @@ cd portaudio
 time ./configure -without-jack && make $CPU_CORES || exit 1
 
 # --------------------------------------------------------------------------------------------------
-# --- Download the AVS Device SDK ---
-cd ${PROJECT_DIR}
-
 echo "##############################################
 #                                            #
 #            DOWNLOADING AVS SDK             #
 #                                            #
 ##############################################"
-
+cd ${PROJECT_DIR}
 time git clone --single-branch --branch $BRANCH git://github.com/alexa/avs-device-sdk.git || exit 1
-
-cd ${PROJECT_DIR}/third-party
-
-echo "##############################################
-#                                            #
-#         DOWNLOADING SENSORY WWE            #
-#                                            #
-##############################################"
-
-time git clone git://github.com/Sensory/alexa-rpi.git || exit 1
-
-# --- You have to run the licensing script to view the Sensory licensing agreement. ---
-echo "##############################################
-#                                            #
-#        EXECUTING SENSORY LICENSE           #
-#                                            #
-##############################################"
-time ${PROJECT_DIR}/third-party/alexa-rpi/bin/./sdk-license --validate ../config/license-key.txt || exit 1
 
 echo "##############################################
 #                                            #
@@ -174,6 +150,7 @@ echo "##############################################
 cd ${PROJECT_DIR}/sdk-build
 
 # --- Configure, Build, and Install the AVS Device SDK ---
+# --- DPORTAUDIO_LIB_PATH changes depending on the SDK version ---
 if [ "$BRANCH" != "v1.18.0" ]; then
 echo "##############################################
 #                                            #
@@ -181,9 +158,6 @@ echo "##############################################
 #                                            #
 ##############################################"
     time cmake ../avs-device-sdk \
-    -DSENSORY_KEY_WORD_DETECTOR=ON \
-    -DSENSORY_KEY_WORD_DETECTOR_LIB_PATH=${PROJECT_DIR}/third-party/alexa-rpi/lib/libsnsr.a \
-    -DSENSORY_KEY_WORD_DETECTOR_INCLUDE_DIR=${PROJECT_DIR}/third-party/alexa-rpi/include \
     -DGSTREAMER_MEDIA_PLAYER=ON \
     -DPORTAUDIO=ON \
     -DPORTAUDIO_LIB_PATH=${PROJECT_DIR}/third-party/portaudio/lib/.libs/libportaudio.a \
@@ -197,9 +171,6 @@ echo "##############################################
 #                                            #
 ##############################################"
     time cmake ../avs-device-sdk \
-    -DSENSORY_KEY_WORD_DETECTOR=ON \
-    -DSENSORY_KEY_WORD_DETECTOR_LIB_PATH=${PROJECT_DIR}/third-party/alexa-rpi/lib/libsnsr.a \
-    -DSENSORY_KEY_WORD_DETECTOR_INCLUDE_DIR=${PROJECT_DIR}/third-party/alexa-rpi/include \
     -DGSTREAMER_MEDIA_PLAYER=ON \
     -DPORTAUDIO=ON \
     -DPORTAUDIO_LIB_PATH=${PROJECT_DIR}/third-party/portaudio/lib/.libs/libportaudio.so \
@@ -228,7 +199,9 @@ echo "##############################################
 #                                            #
 ##############################################"
 
-# --- Generate the AlexaClientSDKConfig.json file to be used by the sample apps for the SDKs ---
+# --- Generate the AlexaClientSDKConfig.json file to be used by the sample apps for the SDK ---
+# --- Keep in mind that genConfig.sh uses the command "python" and if you have a different default
+# --- in your system (e.g. Ubuntu 19.10 uses "python3") you need to update your settings manually.
 cd ${PROJECT_DIR}/avs-device-sdk/tools/Install
 echo "{\"deviceInfo\": {\"clientId\": \"$clientId\",\"productId\": \"$productId\"}}" > config.json
 

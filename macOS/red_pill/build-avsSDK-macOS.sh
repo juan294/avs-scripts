@@ -19,10 +19,10 @@
 #
 #=================================================================================================
 #  IMPLEMENTATION
-#     version        build-avsSDK-macOS.sh v0.1.0
+#     version        build-avsSDK-macOS.sh v0.1.1
 #     author         Juan GONZALEZ PONCE (inspired by Behboud KALANTARY's macOS script)
 #     copyright      Copyright (c) http://www.amazon.com
-#     based_on       https://developer.amazon.com/en-US/docs/alexa/avs-device-sdk/ubuntu.html
+#     based_on       https://developer.amazon.com/en-US/docs/alexa/avs-device-sdk/mac-os.html
 #
 #=================================================================================================
 # END_OF_HEADER
@@ -32,17 +32,17 @@
 # --- Set up required variables for installation ---
 
 # --- YOUR PRODUCT ---
-clientId="amzn1.application-oa2-client.4b10fbadbca14b8c924dc7c000ef6a64" #--- Make sure this matches the values set up in the AVS Console
-productId="MacBookPro" #--- Make sure this matches the values set up in the AVS Console
-DSN="12345" #--- The number doesn't really matter while testing
+clientId="amzn1.application-oa2-client.4b10fbadbca14b8c924dc7c000ef6a64" #--- Make sure this matches the values set up in the AVS Console.
+productId="MacBookPro" #--- Make sure this matches the values set up in the AVS Console.
+DSN="998987" #--- The number doesn't really matter while testing.
 
 # --- YOUR LOCAL ENVIRONMENT ---
 HOME="/Users/jgponce"
-PROJECT_DIR=${HOME}"/Prototypes/avs-sdk_1_15" #--- There's no need to create these folders in advanced
-CPU_CORES="-j2" #--- Set the desired # of cores. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether
+PROJECT_DIR=${HOME}"/Prototypes/avs-sdk_1_18" #--- There's no need to create these folders in advanced.
+CPU_CORES="-j2" #--- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
 
 # --- AVS SDK ---
-BRANCH="v1.15" #--- If you're building for Medici make sure to set this up to v1.15
+BRANCH="v1.18.0" #--- If you're building for Medici make sure to set this up to v1.15.
 DEBUG_LEVEL="DEBUG9" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
 
 # --------------------------------------------------------------------------------------------------
@@ -198,8 +198,8 @@ time cmake ../avs-device-sdk \
 -DPORTAUDIO=ON \
 -DPORTAUDIO_LIB_PATH=${PROJECT_DIR}/third-party/portaudio/lib/.libs/libportaudio.a \
 -DPORTAUDIO_INCLUDE_DIR=${PROJECT_DIR}/third-party/portaudio/include \
--DCMAKE_BUILD_TYPE=DEBUG || exit 1
-#-DCMAKE_INSTALL_PREFIX=${PROJECT_DIR}/sdk-install || exit 1
+-DCMAKE_BUILD_TYPE=DEBUG \
+-DCMAKE_INSTALL_PREFIX=${PROJECT_DIR}/sdk-install || exit 1
 
 echo "##############################################
 #                                            #

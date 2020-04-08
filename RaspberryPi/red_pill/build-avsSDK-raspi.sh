@@ -12,14 +12,14 @@
 #
 #============================================================================================================================
 #  SUCCESSFULLY TESTED ON
-#    OS:     Raspbian GNU/Linux 9 [Stretch] (Running on Raspberry Pi 3B w/1GB RAM)
-#    SDK(s): v1.15
-#    OS:     Raspbian GNU/Linux 10 [Buster] (Running on Raspberry Pi 4 w/4GB RAM)
+#    OS:     Raspbian GNU/Linux 9 [Stretch] (Running on Raspberry Pi 3B+ w/1GB RAM)
+#    SDK(s): v1.15 | v1.17.0 | v1.18.0
+#    OS:     Raspbian GNU/Linux 10 [Buster] (Running on Raspberry Pi 4B w/4GB RAM)
 #    SDK(s): v1.17.0 | v1.18.0
 #
 #============================================================================================================================
 #  IMPLEMENTATION
-#     version        build-avsSDK-raspbi.sh v0.1.0
+#     version        build-avsSDK-raspbi.sh v0.1.1
 #     author         Juan GONZALEZ PONCE (inspired by Behboud KALANTARY's macOS script)
 #     copyright      Copyright (c) http://www.amazon.com
 #     license        GNU General Public License
@@ -33,18 +33,18 @@
 # --- Before you install the AVS Device SDK, you must register an AVS product and create a security profile. ---
 # --- Set up required variables for installation ---
 
-# --- YOUR PRODUCT ---
-clientId="YOUR_CLIENT_ID" #--- Make sure this matches the values set up in the AVS Console
-productId="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the AVS Console
-DSN="DEVICE_SERIAL_NUMBER" #--- The number doesn't really matter while testing
+#--- YOUR PRODUCT ---
+clientId="YOUR_CLIENT_ID" #--- Make sure this matches the values set up in the AVS Console.
+productId="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the AVS Console.
+DSN="DEVICE_SERIAL_NUMBER" #--- The number doesn't really matter while testing.
 
-# --- YOUR LOCAL ENVIRONMENT ---
-HOME="/home/pi"
-PROJECT_DIR=${HOME}"/Prototypes/ass-sdk" #--- There's no need to create these folders in advanced
-CPU_CORES="-j4" #--- Set the desired # of cores. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether
+#--- YOUR LOCAL ENVIRONMENT ---
+HOME="PATH_TO_HOME_FOLDER"
+PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" #--- There's no need to create these folders in advanced.
+CPU_CORES="N_CORES_AVAILABLE" #--- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
 
-# --- AVS SDK ---
-BRANCH="THE_SDK_BRANCH_YOU_WANT" #--- If you're building for Medici make sure to set this up to v1.15
+#--- AVS SDK ---
+BRANCH="THE_SDK_BRANCH_YOU_WANT" #--- If you're building for Medici make sure to set this up to v1.15.
 DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
 
 # --------------------------------------------------------------------------------------------------

@@ -1,44 +1,44 @@
 #!/usr/bin/env sh
-#=================================================================================================
+#=====================================================================================================
 # HEADER
-#=================================================================================================
+#=====================================================================================================
 #  DESCRIPTION  ASS SDK Installation:
 #               This shell script is meant to ease and automate
 #               configuring, building, and installing the Alexa
 #               Smart Screen SDK on macOS.
-#=================================================================================================
+#=====================================================================================================
 #  HISTORY
 #     2020/04/06 : @jgponce : Script creation
 # 
-#=================================================================================================
+#=====================================================================================================
 #  SUCCESSFULLY TESTED ON
 #    OS:       macOS Mojave v10.14.6
 #    SDK(s):   v1.15
 #    APL CORE: v1.2
 #
-#=================================================================================================
+#=====================================================================================================
 #  IMPLEMENTATION
 #     version        build-avsSDK-Ubuntu.sh v0.1.1
 #     author         Juan GONZALEZ PONCE (inspired by Behboud KALANTARY's macOS script)
 #     copyright      Copyright (c) http://www.amazon.com
-#     based_on       https://developer.amazon.com/en-US/docs/alexa/alexa-smart-screen-sdk/ubuntu.html
+#     based_on       https://developer.amazon.com/en-US/docs/alexa/alexa-smart-screen-sdk/mac-os.html
 #
-#=================================================================================================
+#=====================================================================================================
 # END_OF_HEADER
-#=================================================================================================
+#=====================================================================================================
 
 # --- Create an AVS device on the developer portal, including a security profile ---
 # --- The following instructions assume you have a working AVS SDK installation located in PROJECT_DIR ---
 # --- Set up required variables for installation ---
 
-# --- YOUR LOCAL ENVIRONMENT ---
-HOME="/Users/jgponce"
-PROJECT_DIR=${HOME}"/Prototypes/avs-sdk_1_15" #--- There's no need to create these folders in advanced
-CPU_CORES="-j2" #--- Set the desired # of cores. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether
+#--- YOUR LOCAL ENVIRONMENT ---
+HOME="PATH_TO_HOME_FOLDER"
+PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" #--- There's no need to create these folders in advanced.
+CPU_CORES="N_CORES_AVAILABLE" #--- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
 
-# --- ASS SDK ---
-APL_CORE_BRANCH="v1.2" #--- If you're building for Medici make sure to set this up to v1.2
-DEBUG_LEVEL="INFO" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
+#--- ASS SDK ---
+APL_CORE_BRANCH="THE_LIB_BRANCH_YOU_WANT" #--- If you're building for Medici make sure to set this up to v1.2
+DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
 
 # --------------------------------------------------------------------------------------------------
 # --- Download the APL Core Library and Alexa Smart Screen SDK ---
