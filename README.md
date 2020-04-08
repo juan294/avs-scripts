@@ -21,19 +21,16 @@ Piece of cake!
 
 These babies have been tested in the following platforms:
 
-|                            |         AVS SDK           | ASS SDK |
-|----------------------------|---------------------------|---------|
-| Operative System / SDKs    | v1.15 | v1.17.0 | v1.18.0 |   v1.2  |
-|----------------------------|-------|---------|---------|---------|
-| Ubuntu 18.04.4 LTS         | ✓     | ✓       | ✓       | ✓       |
-| Ubuntu 19.10.1 LTS         | x     | ✓       | ✓       | x       |
-| Raspbian 9 (Stretch)       | ✓     | ✓       | ✓       | x       |
-| Raspbian 10 (Buster)       | x     | ✓       | ✓       | x       |
-| macOS Mojave v10.14        | ✓     | ✓       | ✓       | ✓       |
-| macOS Catalina v10.15      | ✓     | ✓       | ✓       | x       |
+| Operative System / SDKs    | AVS v1.15 | AVS v1.17.0 | AVS v1.18.0 |  ASS v1.2  |
+|----------------------------|-----------|-------------|-------------|------------|
+| Ubuntu 18.04.4 LTS         | ✓         | ✓           | ✓           | ✓          |
+| Ubuntu 19.10.1 LTS         | x         | ✓           | ✓           | x          |
+| Raspbian 9 (Stretch)       | ✓         | ✓           | ✓           | x          |
+| Raspbian 10 (Buster)       | x         | ✓           | ✓           | x          |
+| macOS Mojave v10.14        | ✓         | ✓           | ✓           | ✓          |
 
-Legend:
-* ✓: Tested and ran without issues
+**Legend**:
+* ✓: Tested and ran without issues.
 * x: Tested but couldn't make it work or it's not officially supported.
 
 Note: More details about the exact versions of software and hardware can be found in the header of each script.

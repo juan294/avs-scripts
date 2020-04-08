@@ -1,13 +1,13 @@
 #!/usr/bin/env sh
 # --- I'M FEELING LUCKY ---
-clientId="amzn1.application-oa2-client.4b10fbadbca14b8c924dc7c000ef6a64"
-productId="MacBookPro"
-DSN="998987"
-HOME="/Users/jgponce"
-PROJECT_DIR=${HOME}"/Prototypes/avs-sdk_1_15_bp"
-CPU_CORES="-j2"
-BRANCH="v1.15"
-DEBUG_LEVEL="DEBUG9"
+clientId="YOUR_CLIENT_ID"
+productId="YOUR_PRODUCT_ID"
+DSN="DEVICE_SERIAL_NUMBER"
+HOME="PATH_TO_HOME_FOLDER"
+PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER"
+CPU_CORES="N_CORES_AVAILABLE"
+BRANCH="THE_SDK_BRANCH"
+DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL"
 
 mkdir -p ${PROJECT_DIR}
 cd ${PROJECT_DIR}

@@ -12,8 +12,6 @@
 # 
 #=================================================================================================
 #  SUCCESSFULLY TESTED ON
-#    OS:     macOS Catalina v10.15.4
-#    SDK(s): v1.15 | v1.17.0 | v1.18.0
 #    OS:     macOS Mojave v10.14.6
 #    SDK(s): v1.15 | v1.17.0 | v1.18.0
 #
@@ -31,19 +29,19 @@
 # --- Before you install the AVS Device SDK, you must register an AVS product and create a security profile. ---
 # --- Set up required variables for installation ---
 
-# --- YOUR PRODUCT ---
-clientId="amzn1.application-oa2-client.4b10fbadbca14b8c924dc7c000ef6a64" #--- Make sure this matches the values set up in the AVS Console.
-productId="MacBookPro" #--- Make sure this matches the values set up in the AVS Console.
-DSN="998987" #--- The number doesn't really matter while testing.
+#--- YOUR PRODUCT ---
+clientId="YOUR_CLIENT_ID" #--- Make sure this matches the values set up in the AVS Console.
+productId="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the AVS Console.
+DSN="DEVICE_SERIAL_NUMBER" #--- The number doesn't really matter while testing.
 
-# --- YOUR LOCAL ENVIRONMENT ---
-HOME="/Users/jgponce"
-PROJECT_DIR=${HOME}"/Prototypes/avs-sdk_1_18" #--- There's no need to create these folders in advanced.
-CPU_CORES="-j2" #--- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
+#--- YOUR LOCAL ENVIRONMENT ---
+HOME="PATH_TO_HOME_FOLDER"
+PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" #--- There's no need to create these folders in advanced.
+CPU_CORES="N_CORES_AVAILABLE" #--- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
 
-# --- AVS SDK ---
-BRANCH="v1.18.0" #--- If you're building for Medici make sure to set this up to v1.15.
-DEBUG_LEVEL="DEBUG9" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
+#--- AVS SDK ---
+BRANCH="THE_SDK_BRANCH_YOU_WANT" #--- If you're building for Medici make sure to set this up to v1.15.
+DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
 
 # --------------------------------------------------------------------------------------------------
 # --- Set up your development environment ---
