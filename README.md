@@ -21,7 +21,7 @@ Piece of cake!
 
 These babies have been tested in the following platforms:
 
-| Operative System / SDKs    | AVS v1.15 | AVS v1.17.0 | AVS v1.18.0 |  ASS v1.2  |
+| Operative System / SDKs    | [AVS v1.15](https://github.com/alexa/avs-device-sdk/tree/v1.15) | [AVS v1.17.0](https://github.com/alexa/avs-device-sdk/tree/v1.17.0) | [AVS v1.18.0](https://github.com/alexa/avs-device-sdk/tree/v1.18.0) |  [ASS v2.0.1](https://github.com/alexa/alexa-smart-screen-sdk/tree/v2.0.1)  |
 |----------------------------|-----------|-------------|-------------|------------|
 | Ubuntu 18.04.4 LTS         | ✓         | ✓           | ✓           | ✓          |
 | Ubuntu 19.10.1 LTS         | x         | ✓           | ✓           | x          |
