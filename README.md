@@ -21,7 +21,7 @@ Piece of cake!
 
 These babies have been tested in the following platforms:
 
-                             |         AVS SDK           | ASS SDK |
+|                            |         AVS SDK           | ASS SDK |
 |----------------------------|---------------------------|---------|
 | Operative System / SDKs    | v1.15 | v1.17.0 | v1.18.0 |   v1.2  |
 |----------------------------|-------|---------|---------|---------|
