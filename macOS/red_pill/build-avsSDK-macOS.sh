@@ -26,24 +26,23 @@
 # END_OF_HEADER
 #=================================================================================================
 
-# --- Before you install the AVS Device SDK, you must register an AVS product and create a security profile. ---
+# --- Before you install the AVS Device SDK, you must register an AVS product and create a security profile ---
 # --- Set up required variables for installation ---
 
-#--- YOUR PRODUCT ---
-CLIENT_ID="YOUR_CLIENT_ID" #--- Make sure this matches the values set up in the AVS Console.
-PRODUCT_ID="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the AVS Console.
-DSN="DEVICE_SERIAL_NUMBER" #--- The number doesn't really matter while testing.
+# --- YOUR PRODUCT ---
+CLIENT_ID="YOUR_CLIENT_ID" # --- Make sure this matches the values set up in the AVS Console.
+PRODUCT_ID="YOUR_PRODUCT_ID" # --- Make sure this matches the values set up in the AVS Console.
+DSN="DEVICE_SERIAL_NUMBER" # --- The number doesn't really matter while testing.
 
-#--- YOUR LOCAL ENVIRONMENT ---
+# --- YOUR LOCAL ENVIRONMENT ---
 HOME="PATH_TO_HOME_FOLDER"
-PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" #--- There's no need to create these folders in advanced.
-CPU_CORES="N_CORES_AVAILABLE" #--- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
+PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" # --- There's no need to create these folders in advanced.
+CPU_CORES="N_CORES_AVAILABLE" # --- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
 
-#--- AVS SDK ---
-BRANCH="THE_SDK_BRANCH_YOU_WANT" #--- If you're building for Medici make sure to set this up to v1.15.
-DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
+# --- AVS SDK ---
+BRANCH="THE_SDK_BRANCH_YOU_WANT" # --- If you're building for Medici make sure to set this up to v1.15.
+DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" # --- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
 
-# --------------------------------------------------------------------------------------------------
 # --- Set up your development environment ---
 
 echo "##############################################
@@ -71,18 +70,18 @@ mkdir sound-files # --- Not sure yet where this is used
 #brew --version
 #xcode-select --version
 
-# --- Check Homebrew Installation & update if installed---
+# --- Check Homebrew Installation & update if installed ---
 which -s brew
 if [[ $? != 0 ]] ; then
-    # Install Homebrew
+    # --- If it's not in the system already then nstall Homebrew.
     echo "Installing Homebrew: "
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 else
     echo "Updating Homebrew:"
-    brew update # --- Beware that this command might fail if you're behind VPN or FW
+    brew update # --- Beware that this command might fail if you're behind VPN or FW.
 fi
 
-# Make sure python is 2.7 or later. Feel free to comment this check if you're using Python3 or know your version of 2.x
+# --- Make sure python is 2.7 or later. Feel free to comment this check if you're using Python3 or know your version of 2.x ---
 PYTHON_VERSION=`/usr/bin/python -c 'import sys
 print (sys.version_info >= (2, 7) and "1" or "0")'`
 if [ "$PYTHON_VERSION" = '0' ]; then
@@ -94,7 +93,7 @@ fi
 brew install curl-openssl
 echo export PATH="/usr/local/opt/curl-openssl/bin:$PATH" >> ~/.bash_profile
 
-# --- Verify that the openssl and nghttp2 dependencies are installed; these dependencies are used to connect to AVS by using HTTP. ---
+# --- Verify that the openssl and nghttp2 dependencies are installed; these dependencies are used to connect to AVS by using HTTP ---
 curl --version
 
 : 'Example output:
@@ -138,7 +137,7 @@ echo "##############################################
 ##############################################"
 
 # --- Install the SDK dependencies ---
-# --- Make sure the command runs successfully, and that no errors are thrown. If the command fails, run brew install for each dependency individually. ---
+# --- Make sure the command runs successfully, and that no errors are thrown. If the command fails, run brew install for each dependency individually ---
 brew install gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-libav sqlite3 repo cmake clang-format doxygen wget git
 
 echo "##############################################
@@ -164,12 +163,11 @@ echo "##############################################
 # --- Retrieve the correct PKG_CONFIG_PATH path and modification ---
 brew info openssl
 
-# --- Update the libffi package configuration path to the path retrieved in the previous step. ---
+# --- Update the libffi package configuration path to the path retrieved in the previous step ---
 opensslFolder=$(brew info openssl | grep /usr/local/Cellar | cut -d '(' -f1 | tr -d '[:space:]')
 echo export PKG_CONFIG_PATH="/usr/local/opt/libffi/lib/pkgconfig:$opensslFolder/lib/pkgconfig:$PKG_CONFIG_PATH" >> ~/.bash_profile
 source $HOME/.bash_profile
 
-# --------------------------------------------------------------------------------------------------
 # --- Download the AVS Device SDK ---
 cd ${PROJECT_DIR}
 
@@ -249,13 +247,13 @@ echo "##############################################
     -DSDK_CONFIG_DEVICE_DESCRIPTION="macos" || exit 1
 fi
 
-# if dyld error "image not found" occurs then try
+#if dyld error "image not found" occurs then try
 #otool -l ${PROJECT_DIR}/mmsdk-build/modules/Alexa/SampleApp/src/SampleApp | grep -A2 LC_RPATH 
 #install_name_tool -add_rpath ${PROJECT_DIR}/sdk-libs/lib ${PROJECT_DIR}/mmsdk-build/modules/Alexa/SampleApp/src/SampleApp
 #${PROJECT_DIR}/mmsdk-build/modules/Alexa/SampleApp/src/SampleApp -C sdk-build/Integration/AlexaClientSDKConfig.json -C mmsdk-source/modules/GUI/config/SmartScreenSDKConfig.json -K third-party/snowboy/resources
 
-# Successful completion would be confirmed with a message similar to: 
-# "Completed generation of config file: /home/ubuntu/Projects/ass-sdk/sdk-build/Integration/AlexaClientSDKConfig.json"
+#Successful completion would be confirmed with a message similar to: 
+#"Completed generation of config file: /home/ubuntu/Projects/ass-sdk/sdk-build/Integration/AlexaClientSDKConfig.json"
 
 echo "##############################################
 #                                            #
@@ -263,7 +261,6 @@ echo "##############################################
 #                                            #
 ##############################################"
 
-# --------------------------------------------------------------------------------------------------
 # --- Run the AVS Device SDK sample app ---
 cd ${PROJECT_DIR}/sdk-build/SampleApp/src
 ./SampleApp ${PROJECT_DIR}/sdk-build/Integration/AlexaClientSDKConfig.json $DEBUG_LEVEL

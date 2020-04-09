@@ -32,16 +32,15 @@
 # --- The following instructions assume you have a working AVS SDK installation located in PROJECT_DIR ---
 # --- Set up required variables for instalation ---
 
-#--- YOUR LOCAL ENVIRONMENT ---
+# --- YOUR LOCAL ENVIRONMENT ---
 HOME="PATH_TO_HOME_FOLDER"
-PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" #--- There's no need to create these folders in advanced.
-CPU_CORES="N_CORES_AVAILABLE" #--- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
+PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" # --- There's no need to create these folders in advanced.
+CPU_CORES="N_CORES_AVAILABLE" # --- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
 
-#--- ASS SDK ---
-APL_CORE_BRANCH="THE_LIB_BRANCH" #--- If you're building for Medici make sure to set this up to v1.2.
-DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
+# --- ASS SDK ---
+APL_CORE_BRANCH="THE_LIB_BRANCH" # --- If you're building for Medici make sure to set this up to v1.2.
+DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" # --- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
 
-# ------------------------------------------------------------------------------------------------------
 # --- Download the APL Core Library and Alexa Smart Screen SDK ---
 cd ${PROJECT_DIR}
 echo "##############################################    
@@ -131,7 +130,7 @@ echo "##############################################
 #                                            #
 ##############################################"
 
-# --- Run the sample app ---
+# --- Run the ASS SDK sample app ---
 cd ${PROJECT_DIR}/ss-build
 ./modules/Alexa/SampleApp/src/SampleApp \
 -C ${PROJECT_DIR}/sdk-build/Integration/AlexaClientSDKConfig.json \

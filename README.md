@@ -12,8 +12,8 @@ You still need to be familiar with the general instructions posted on the offici
 
 ### A Note on the Alexa Smart Screen SDK
 In order to install the Alexa Smart Screen SDK (ASS SDK) in your system using these scripts, you would need to have a working AVS SDK installation first (including Sample App authorization). The best way to get the ASS SDK quickly set up and running is to: 
-1. Run the build-avsSDK-preferred_platform.sh script (and authorize the app in amazon.com/code)
-2. Run the build-assSDK-preferred_platform.sh (making sure you specified the same $PROJECT_DIR)
+1. Run the **build-avsSDK-_preferred_platform_.sh** script (and authorize the app in amazon.com/code)
+2. Run the **build-assSDK-_preferred_platform_.sh** (making sure you specified the same $PROJECT_DIR)
 
 Piece of cake!
 

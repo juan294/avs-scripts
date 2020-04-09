@@ -30,24 +30,23 @@
 # END_OF_HEADER
 #============================================================================================================================
 
-# --- Before you install the AVS Device SDK, you must register an AVS product and create a security profile. ---
+# --- Before you install the AVS Device SDK, you must register an AVS product and create a security profile ---
 # --- Set up required variables for installation ---
 
-#--- YOUR PRODUCT ---
+# --- YOUR PRODUCT ---
 CLIENT_ID="YOUR_CLIENT_ID" #--- Make sure this matches the values set up in the AVS Console.
 PRODUCT_ID="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the AVS Console.
 DSN="DEVICE_SERIAL_NUMBER" #--- The number doesn't really matter while testing.
 
-#--- YOUR LOCAL ENVIRONMENT ---
+# --- YOUR LOCAL ENVIRONMENT ---
 HOME="PATH_TO_HOME_FOLDER"
 PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" #--- There's no need to create these folders in advanced.
 CPU_CORES="N_CORES_AVAILABLE" #--- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
 
-#--- AVS SDK ---
+# --- AVS SDK ---
 BRANCH="THE_SDK_BRANCH_YOU_WANT" #--- If you're building for Medici make sure to set this up to v1.15.
 DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
 
-# --------------------------------------------------------------------------------------------------
 # --- Set up your development environment ---
 echo "##############################################
 #                                            #
@@ -61,14 +60,14 @@ cd ${PROJECT_DIR}
 mkdir sdk-build third-party sdk-install db
 
 # --- Update your system (if needed) ---
-#sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get update && sudo apt-get upgrade -y
 
 # --- Install the SDK dependencies ---
-# --- Make sure the command runs successfully, and that no errors are thrown. If the command fails, run apt-get install for each dependency individually. ---
+# --- Make sure the command runs successfully, and that no errors are thrown. If the command fails, run apt-get install for each dependency individually ---
 time sudo apt-get -y install \
 git gcc cmake build-essential libsqlite3-dev libcurl4-openssl-dev libfaad-dev \
 libssl-dev libsoup2.4-dev libgcrypt20-dev libgstreamer-plugins-bad1.0-dev \
-gstreamer1.0-plugins-good libasound2-dev doxygen || exit 1 # -- If it fails don't waste time going forward, instead exit in the least elegant way possible. ---
+gstreamer1.0-plugins-good libasound2-dev doxygen || exit 1 # -- If it fails don't waste time going forward, instead exit in the least elegant way possible.
  
 echo "##############################################
 #                                            #
@@ -90,11 +89,10 @@ echo "##############################################
 #                                            #
 ##############################################"
 
-# --- Install commentjson to parse comments in the AlexaClientSDKConfig.json file. ---
+# --- Install commentjson to parse comments in the AlexaClientSDKConfig.json file ---
 time  pip install commentjson || exit 1
 
-# --------------------------------------------------------------------------------------------------
-# --- Download the AVS Device SDK and the Sensory wake word engine ---
+# --- Download the AVS Device SDK and the Sensory Wake Word Engine ---
 cd ${PROJECT_DIR}
 
 echo "##############################################
@@ -115,7 +113,7 @@ echo "##############################################
 
 time git clone git://github.com/Sensory/alexa-rpi.git || exit 1
 
-# --- You have to run the licensing script to view the Sensory licensing agreement. ---
+# --- You have to run the licensing script to view the Sensory licensing agreement ---
 echo "##############################################
 #                                            #
 #        EXECUTING SENSORY LICENSE           #
@@ -123,7 +121,6 @@ echo "##############################################
 ##############################################"
 time ${PROJECT_DIR}/third-party/alexa-rpi/bin/./sdk-license --validate ../config/license-key.txt || exit 1
 
-# --------------------------------------------------------------------------------------------------
 cd ${PROJECT_DIR}/sdk-build
 
  # --- Configure, Build, and Install the AVS Device SDK ---
@@ -218,13 +215,13 @@ echo "##############################################
     -DSDK_CONFIG_DEVICE_DESCRIPTION="ubuntu" || exit 1
 fi
 
-# if dyld error "image not found" occurs then try
+#if dyld error "image not found" occurs then try
 #otool -l ${PROJECT_DIR}/mmsdk-build/modules/Alexa/SampleApp/src/SampleApp | grep -A2 LC_RPATH 
 #install_name_tool -add_rpath ${PROJECT_DIR}/sdk-libs/lib ${PROJECT_DIR}/mmsdk-build/modules/Alexa/SampleApp/src/SampleApp
 #${PROJECT_DIR}/mmsdk-build/modules/Alexa/SampleApp/src/SampleApp -C sdk-build/Integration/AlexaClientSDKConfig.json -C mmsdk-source/modules/GUI/config/SmartScreenSDKConfig.json -K third-party/snowboy/resources
 
-# Successful completion would be confirmed with a message similar to: 
-# "Completed generation of config file: /home/ubuntu/Projects/ass-sdk/sdk-build/Integration/AlexaClientSDKConfig.json"
+#Successful completion would be confirmed with a message similar to: 
+#"Completed generation of config file: /home/pi/Prototypes/avs-sdk/sdk-build/Integration/AlexaClientSDKConfig.json"
 
 echo "##############################################
 #                                            #
@@ -232,7 +229,6 @@ echo "##############################################
 #                                            #
 ##############################################"
 
-# --------------------------------------------------------------------------------------------------
 # --- Run the AVS Device SDK sample app ---
 cd ${PROJECT_DIR}/sdk-build/SampleApp/src
 PA_ALSA_PLUGHW=1 ./SampleApp ${PROJECT_DIR}/sdk-build/Integration/AlexaClientSDKConfig.json $DEBUG_LEVEL

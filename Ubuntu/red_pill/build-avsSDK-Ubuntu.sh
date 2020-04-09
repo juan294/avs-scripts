@@ -28,24 +28,23 @@
 # END_OF_HEADER
 #=================================================================================================
 
-# --- Before you install the AVS Device SDK, you must register an AVS product and create a security profile. ---
+# --- Before you install the AVS Device SDK, you must register an AVS product and create a security profile ---
 # --- Set up required variables for installation ---
 
 # --- YOUR AVS RODUCT ---
-CLIENT_ID="YOUR_CLIENT_ID" #--- Make sure this matches the values set up in the AVS Console.
-PRODUCT_ID="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the AVS Console.
-DSN="DEVICE_SERIAL_NUMBER" #--- The number doesn't really matter while testing.
+CLIENT_ID="YOUR_CLIENT_ID" # --- Make sure this matches the values set up in the AVS Console.
+PRODUCT_ID="YOUR_PRODUCT_ID" # --- Make sure this matches the values set up in the AVS Console.
+DSN="DEVICE_SERIAL_NUMBER" # --- The number doesn't really matter while testing.
 
 # --- YOUR LOCAL ENVIRONMENT ---
 HOME="PATH_TO_HOME_FOLDER"
-PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" #--- There's no need to create these folders in advanced.
-CPU_CORES="N_CORES_AVAILABLE" #--- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
+PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" # --- There's no need to create these folders in advanced.
+CPU_CORES="N_CORES_AVAILABLE" # --- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
 
 # --- AVS SDK ---
-BRANCH="THE_SDK_BRANCH" #--- If you're building for Medici make sure to set this up to v1.15.
-DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" #--- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
+BRANCH="THE_SDK_BRANCH" # --- If you're building for Medici make sure to set this up to v1.15.
+DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" # --- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
 
-# --------------------------------------------------------------------------------------------------
 echo "##############################################
 #                                            #
 #   SETTING UP THE DEVELOPMENT ENVIRONMENT   #
@@ -58,7 +57,7 @@ cd ${PROJECT_DIR}
 mkdir sdk-build third-party sdk-install db
 
 # --- Update your system (if needed) ---
-#sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get update && sudo apt-get upgrade -y
 
 echo "##############################################
 #                                            #
@@ -66,13 +65,13 @@ echo "##############################################
 #                                            #
 ##############################################"
 
-# --- Make sure the command runs successfully, and that no errors are thrown. If the command fails, run apt-get install for each dependency individually. ---
+# --- Make sure the command runs successfully, and that no errors are thrown. If the command fails, run apt-get install for each dependency individually ---
 time sudo apt-get install -y git gcc \
 cmake openssl clang-format libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad libgstreamer-plugins-bad1.0-dev \
 gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools libssl-dev pulseaudio doxygen libsqlite3-dev curl libcurl4-openssl-dev \
-libasound2-dev || exit 1 # -- If it fails don't waste time going forward, instead exit in the least elegant way possible. ---
+libasound2-dev || exit 1 # -- If it fails don't waste time going forward, instead exit in the least elegant way possible.
 
-# --- Verify that the openssl and nghttp2 dependencies are installed; these dependencies are used to connect to AVS by using HTTP. ---
+# --- Verify that the openssl and nghttp2 dependencies are installed; these dependencies are used to connect to AVS by using HTTP ---
 curl --version
 
 : 'Example output:
@@ -132,7 +131,6 @@ tar xf pa_stable_v190600_20161030.tgz
 cd portaudio
 time ./configure -without-jack && make $CPU_CORES || exit 1
 
-# --------------------------------------------------------------------------------------------------
 echo "##############################################
 #                                            #
 #            DOWNLOADING AVS SDK             #
@@ -201,7 +199,7 @@ echo "##############################################
 
 # --- Generate the AlexaClientSDKConfig.json file to be used by the sample apps for the SDK ---
 # --- Keep in mind that genConfig.sh uses the command "python" and if you have a different default
-# --- in your system (e.g. Ubuntu 19.10 uses "python3") you need to update your settings manually.
+#     in your system (e.g. Ubuntu 19.10 uses "python3") you need to update your settings manually ---
 cd ${PROJECT_DIR}/avs-device-sdk/tools/Install
 echo "{\"deviceInfo\": {\"clientId\": \"$CLIENT_ID\",\"productId\": \"$PRODUCT_ID\"}}" > config.json
 
@@ -231,13 +229,13 @@ echo "##############################################
     -DSDK_CONFIG_DEVICE_DESCRIPTION="ubuntu" || exit 1
 fi
 
-# if dyld error "image not found" occurs then try
+#if dyld error "image not found" occurs then try
 #otool -l ${PROJECT_DIR}/mmsdk-build/modules/Alexa/SampleApp/src/SampleApp | grep -A2 LC_RPATH 
 #install_name_tool -add_rpath ${PROJECT_DIR}/sdk-libs/lib ${PROJECT_DIR}/mmsdk-build/modules/Alexa/SampleApp/src/SampleApp
 #${PROJECT_DIR}/mmsdk-build/modules/Alexa/SampleApp/src/SampleApp -C sdk-build/Integration/AlexaClientSDKConfig.json -C mmsdk-source/modules/GUI/config/SmartScreenSDKConfig.json -K third-party/snowboy/resources
 
-# Successful completion would be confirmed with a message similar to: 
-# "Completed generation of config file: /home/ubuntu/Projects/ass-sdk/sdk-build/Integration/AlexaClientSDKConfig.json"
+#Successful completion would be confirmed with a message similar to: 
+#"Completed generation of config file: /home/ubuntu/Projects/ass-sdk/sdk-build/Integration/AlexaClientSDKConfig.json"
 
 echo "##############################################
 #                                            #
@@ -245,7 +243,6 @@ echo "##############################################
 #                                            #
 ##############################################"
 
-# --------------------------------------------------------------------------------------------------
 # --- Run the AVS Device SDK sample app ---
 cd ${PROJECT_DIR}/sdk-build/SampleApp/src
 ./SampleApp ${PROJECT_DIR}/sdk-build/Integration/AlexaClientSDKConfig.json $DEBUG_LEVEL
