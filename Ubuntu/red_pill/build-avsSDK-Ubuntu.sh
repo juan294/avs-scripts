@@ -32,8 +32,8 @@
 # --- Set up required variables for installation ---
 
 # --- YOUR AVS RODUCT ---
-clientId="YOUR_CLIENT_ID" #--- Make sure this matches the values set up in the AVS Console.
-productId="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the AVS Console.
+CLIENT_ID="YOUR_CLIENT_ID" #--- Make sure this matches the values set up in the AVS Console.
+PRODUCT_ID="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the AVS Console.
 DSN="DEVICE_SERIAL_NUMBER" #--- The number doesn't really matter while testing.
 
 # --- YOUR LOCAL ENVIRONMENT ---
@@ -203,7 +203,7 @@ echo "##############################################
 # --- Keep in mind that genConfig.sh uses the command "python" and if you have a different default
 # --- in your system (e.g. Ubuntu 19.10 uses "python3") you need to update your settings manually.
 cd ${PROJECT_DIR}/avs-device-sdk/tools/Install
-echo "{\"deviceInfo\": {\"clientId\": \"$clientId\",\"productId\": \"$productId\"}}" > config.json
+echo "{\"deviceInfo\": {\"CLIENT_ID\": \"$CLIENT_ID\",\"PRODUCT_ID\": \"$PRODUCT_ID\"}}" > config.json
 
 if [ "$BRANCH" == "v1.15" ]; then
 echo "##############################################

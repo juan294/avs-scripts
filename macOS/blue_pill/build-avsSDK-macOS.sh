@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 # --- I'M FEELING LUCKY ---
-clientId="YOUR_CLIENT_ID"
-productId="YOUR_PRODUCT_ID"
+CLIENT_ID="YOUR_CLIENT_ID"
+PRODUCT_ID="YOUR_PRODUCT_ID"
 DSN="DEVICE_SERIAL_NUMBER"
 HOME="PATH_TO_HOME_FOLDER"
 PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER"
@@ -50,7 +50,7 @@ make $CPU_CORES || exit 1
 make $CPU_CORES install || exit 1
 
 cd ${PROJECT_DIR}/avs-device-sdk/tools/Install
-echo "{\"deviceInfo\": {\"clientId\": \"$clientId\",\"productId\": \"$productId\"}}" > config.json
+echo "{\"deviceInfo\": {\"CLIENT_ID\": \"$CLIENT_ID\",\"PRODUCT_ID\": \"$PRODUCT_ID\"}}" > config.json
 
 if [ "$BRANCH" == "v1.15" ]; then
     bash genConfig.sh config.json \

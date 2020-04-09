@@ -30,8 +30,8 @@
 # --- Set up required variables for installation ---
 
 #--- YOUR PRODUCT ---
-clientId="YOUR_CLIENT_ID" #--- Make sure this matches the values set up in the AVS Console.
-productId="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the AVS Console.
+CLIENT_ID="YOUR_CLIENT_ID" #--- Make sure this matches the values set up in the AVS Console.
+PRODUCT_ID="YOUR_PRODUCT_ID" #--- Make sure this matches the values set up in the AVS Console.
 DSN="DEVICE_SERIAL_NUMBER" #--- The number doesn't really matter while testing.
 
 #--- YOUR LOCAL ENVIRONMENT ---
@@ -221,7 +221,7 @@ echo "##############################################
 
 # --- Generate the AlexaClientSDKConfig.json file to be used by the sample apps for the SDKs ---
 cd ${PROJECT_DIR}/avs-device-sdk/tools/Install
-echo "{\"deviceInfo\": {\"clientId\": \"$clientId\",\"productId\": \"$productId\"}}" > config.json
+echo "{\"deviceInfo\": {\"CLIENT_ID\": \"$CLIENT_ID\",\"PRODUCT_ID\": \"$PRODUCT_ID\"}}" > config.json
 
 if [ "$BRANCH" == "v1.15" ]; then
 echo "##############################################
