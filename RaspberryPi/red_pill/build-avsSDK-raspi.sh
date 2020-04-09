@@ -190,7 +190,7 @@ echo "##############################################
 
 # --- Generate the AlexaClientSDKConfig.json file to be used by the sample apps for the SDKs ---
 cd ${PROJECT_DIR}/avs-device-sdk/tools/Install
-echo "{\"deviceInfo\": {\"CLIENT_ID\": \"$CLIENT_ID\",\"PRODUCT_ID\": \"$PRODUCT_ID\"}}" > config.json
+echo "{\"deviceInfo\": {\"clientId\": \"$CLIENT_ID\",\"productId\": \"$PRODUCT_ID\"}}" > config.json
 
 if [ "$BRANCH" == "v1.15" ]; then
 echo "##############################################

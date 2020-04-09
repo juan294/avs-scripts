@@ -203,7 +203,7 @@ echo "##############################################
 # --- Keep in mind that genConfig.sh uses the command "python" and if you have a different default
 # --- in your system (e.g. Ubuntu 19.10 uses "python3") you need to update your settings manually.
 cd ${PROJECT_DIR}/avs-device-sdk/tools/Install
-echo "{\"deviceInfo\": {\"CLIENT_ID\": \"$CLIENT_ID\",\"PRODUCT_ID\": \"$PRODUCT_ID\"}}" > config.json
+echo "{\"deviceInfo\": {\"clientId\": \"$CLIENT_ID\",\"productId\": \"$PRODUCT_ID\"}}" > config.json
 
 if [ "$BRANCH" == "v1.15" ]; then
 echo "##############################################

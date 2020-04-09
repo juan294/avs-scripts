@@ -69,7 +69,7 @@ sudo make $CPU_CORES install || exit 1
 make $CPU_CORES SampleApp || exit 1
 
 cd ${PROJECT_DIR}/avs-device-sdk/tools/Install
-echo "{\"deviceInfo\": {\"CLIENT_ID\": \"$CLIENT_ID\",\"PRODUCT_ID\": \"$PRODUCT_ID\"}}" > config.json
+echo "{\"deviceInfo\": {\"clientId\": \"$CLIENT_ID\",\"productId\": \"$PRODUCT_ID\"}}" > config.json
 
 if [ "$BRANCH" == "v1.15" ]; then
     bash genConfig.sh config.json \
