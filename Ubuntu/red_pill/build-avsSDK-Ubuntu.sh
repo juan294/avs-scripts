@@ -39,7 +39,7 @@ DSN="DEVICE_SERIAL_NUMBER" # --- The number doesn't really matter while testing.
 # --- YOUR LOCAL ENVIRONMENT ---
 HOME="PATH_TO_HOME_FOLDER"
 PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" # --- There's no need to create these folders in advanced.
-CPU_CORES="N_CORES_AVAILABLE" # --- Set the desired # of cores with -jn format. Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
+CPU_CORES="N_CORES_AVAILABLE" # --- Set the desired # of cores with -jn format (e.g. -j2 for dual-core machines). Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
 
 # --- AVS SDK ---
 BRANCH="THE_SDK_BRANCH" # --- If you're building for Medici make sure to set this up to v1.15.
