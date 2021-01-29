@@ -9,16 +9,17 @@
 #=================================================================================================
 #  HISTORY
 #     2020/04/06 : @jgponce : Script creation
+#     2021/01/20 : @jgponce : Minor improvements and new macOS version verification
 # 
 #=================================================================================================
 #  SUCCESSFULLY TESTED ON
-#    OS:     macOS Mojave v10.14.6
-#    SDK(s): v1.15 | v1.17.0 | v1.18.0
+#    OS:     macOS Mojave v10.14.6 | macOS Catalina v10.15.7
+#    SDK(s): v1.15 | v1.17.0 | v1.18.0 | v1.21.0 | v1.22.0
 #
 #=================================================================================================
 #  IMPLEMENTATION
-#     version        build-avsSDK-macOS.sh v0.1.1
-#     author         Juan GONZALEZ PONCE (inspired by Behboud KALANTARY's macOS script)
+#     version        build-avsSDK-macOS.sh v0.1.2
+#     author         Juan GONZALEZ PONCE
 #     copyright      Copyright (c) http://www.amazon.com
 #     based_on       https://developer.amazon.com/en-US/docs/alexa/avs-device-sdk/mac-os.html
 #
@@ -29,7 +30,7 @@
 # --- Before you install the AVS Device SDK, you must register an AVS product and create a security profile ---
 # --- Set up required variables for installation ---
 
-# --- YOUR PRODUCT ---
+# --- YOUR AVS RODUCT ---
 CLIENT_ID="YOUR_CLIENT_ID" # --- Make sure this matches the values set up in the AVS Console.
 PRODUCT_ID="YOUR_PRODUCT_ID" # --- Make sure this matches the values set up in the AVS Console.
 DSN="DEVICE_SERIAL_NUMBER" # --- The number doesn't really matter while testing.
@@ -37,11 +38,12 @@ DSN="DEVICE_SERIAL_NUMBER" # --- The number doesn't really matter while testing.
 # --- YOUR LOCAL ENVIRONMENT ---
 HOME="PATH_TO_HOME_FOLDER"
 PROJECT_DIR=${HOME}"PATH_TO_PROJECT_FOLDER" # --- There's no need to create these folders in advanced.
-CPU_CORES="N_CORES_AVAILABLE" # --- Set the desired # of cores with -jn format (e.g. -j2 for dual-core machines).
+CPU_CORES="N_CORES_AVAILABLE" # --- Set the desired # of cores with -jn format (e.g. -j2 for dual-core machines). Note: A multi-threaded build on Raspberry Pi 3 could overheat or run out of memory. Set with caution or avoid altogether.
 
 # --- AVS SDK ---
-BRANCH="THE_SDK_BRANCH_YOU_WANT" # --- If you're building for Medici make sure to set this up to v1.15.
+BRANCH="THE_SDK_BRANCH" # --- If you're building for Medici make sure to set this up to v1.15.
 DEBUG_LEVEL="SAMPLE_APP_DEBUG_LEVEL" # --- Accepted values: DEBUG0 .. DEBUG9 | INFO | WARN | ERROR | CRITICAL | NONE
+
 
 # --- Set up your development environment ---
 
@@ -153,6 +155,10 @@ time wget -c http://www.portaudio.com/archives/pa_stable_v190600_20161030.tgz ||
 tar xf pa_stable_v190600_20161030.tgz
 cd portaudio
 time ./configure --disable-mac-universal && make $CPU_CORES || exit 1
+
+# --- If you get the error: xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools),
+#                                         missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun
+# --- Check on the SDK Dependencies at the beginning of this file.
 
 echo "##############################################
 #                                            #

@@ -20,7 +20,7 @@
 #============================================================================================================================
 #  IMPLEMENTATION
 #     version        build-avsSDK-raspbi.sh v0.1.1
-#     author         Juan GONZALEZ PONCE (inspired by Behboud KALANTARY's macOS script)
+#     author         Juan GONZALEZ PONCE
 #     copyright      Copyright (c) http://www.amazon.com
 #     license        GNU General Public License
 #     based_on       https://developer.amazon.com/en-US/docs/alexa/alexa-smart-screen-sdk/raspberry-pi.html for v1.5 &
@@ -127,7 +127,7 @@ cd ${PROJECT_DIR}/sdk-build
 if [ "$BRANCH" != "v1.18.0" ]; then
 echo "##############################################
 #                                            #
-#    BUILD DEPENDENCIES FOR v1.17 & LOWER    #
+#       GENERATING BUILD DEPENDENCIES        #
 #                                            #
 ##############################################"
     time cmake ../avs-device-sdk \

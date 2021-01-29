@@ -19,7 +19,7 @@
 #=================================================================================================
 #  IMPLEMENTATION
 #     version        build-avsSDK-Ubuntu.sh v0.1.1
-#     author         Juan GONZALEZ PONCE (inspired by Behboud KALANTARY's macOS script)
+#     author         Juan GONZALEZ PONCE
 #     copyright      Copyright (c) http://www.amazon.com
 #     based_on       https://developer.amazon.com/en-US/docs/alexa/alexa-smart-screen-sdk/ubuntu.html
 #
